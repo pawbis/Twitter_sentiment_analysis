@@ -1,16 +1,16 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "twitter_analysis.fullname" . }}
+  name: {{ include "twitter-analysis.fullname" . }}
   labels:
-    {{- include "twitter_analysis.labels" . | nindent 4 }}
+    {{- include "twitter-analysis.labels" . | nindent 4 }}
 spec:
   {{- if not .Values.autoscaling.enabled }}
   replicas: {{ .Values.replicaCount }}
   {{- end }}
   selector:
     matchLabels:
-      {{- include "twitter_analysis.selectorLabels" . | nindent 6 }}
+      {{- include "twitter-analysis.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       {{- with .Values.podAnnotations }}
@@ -18,7 +18,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       labels:
-        {{- include "twitter_analysis.selectorLabels" . | nindent 8 }}
+        {{- include "twitter-analysis.selectorLabels" . | nindent 8 }}
     spec:
       volumes:
         {{- toYaml .Values.volumes | nindent 8 }}
