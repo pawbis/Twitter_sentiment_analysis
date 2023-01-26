@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-api-deployment
+  labels:
+    app: v1
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1
+  template:
+    metadata:
+      labels:
+        app: v1
+    spec:
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: volumen-1-claim
+      containers:
+        - name: twitter-api-container
+          image: pawbis/twitter_api:1.0
+          volumeMounts:
+            - mountPath: "/twitter_api_folder"
+              name: volume

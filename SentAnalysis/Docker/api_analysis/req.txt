@@ -1,0 +1,4 @@
+pandas
+emoji==1.6.3 
+transformers
+torch

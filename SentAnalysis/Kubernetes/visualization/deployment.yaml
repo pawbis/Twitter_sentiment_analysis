@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: twitter-vis-deployment
+  labels:
+    app: v1-jupyter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: v1-jupyter
+  template:
+    metadata:
+      labels:
+        app: v1-jupyter
+    spec:
+      volumes:
+        - name: volume
+          persistentVolumeClaim:
+            claimName: volumen-1-claim
+      containers:
+        - name: twitter-vis-container
+          image: pawbis/twitter_vis:1.0
+          ports:
+            - containerPort: 8888
+          volumeMounts:
+            - mountPath: "/twitter_api_folder"
+              name: volume
