@@ -33,9 +33,9 @@ Create chart name and version as used by the chart label.
 {{/*
 Common labels
 */}}
-{{- define "twitter_analysis.labels" -}}
-helm.sh/chart: {{ include "twitter_analysis.chart" . }}
-{{ include "twitter_analysis.selectorLabels" . }}
+{{- define "twitter-analysis.labels" -}}
+helm.sh/chart: {{ include "twitter-analysis.chart" . }}
+{{ include "twitter-analysis.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "twitter_analysis.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "twitter_analysis.name" . }}
+{{- define "twitter-analysis.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "twitter-analysis.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "twitter_analysis.serviceAccountName" -}}
+{{- define "twitter-analysis.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "twitter_analysis.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "twitter-analysis.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}
