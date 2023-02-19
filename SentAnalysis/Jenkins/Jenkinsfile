@@ -1,0 +1,65 @@
+//4eb30216625344499e869e842e4163b4
+//It is template for potential CI pipeline in order to build/test code, since mine was written to be containerized.
+//As the code has to be tested before containerized mine wont be usefull.
+//CI part of the file
+pipeline {
+    agent any
+    stages {
+        stage("Cleaning up!"){
+            steps{
+                deleteDir()
+            }
+        }
+        stage("Cloning repository!"){
+            steps{
+                sh "git clone https://github.com/pawbis/Twitter_sentiment_analysis.git" //cloning repository
+            }
+        }
+        stage("Build"){
+            steps{
+                sh "echo test" 
+                }
+            }
+        
+        stage("Test"){
+            steps{
+                sh "echo test"
+            }
+        }
+        //deploy part of the jenkinsfile
+        stage("Deploy first container") {
+            steps{
+                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
+                    sh "chmod +x -R ${env.WORKSPACE}"
+                    sh "./Script.sh"
+                    sh "docker login --username pawbis --password password"
+                    sh "docker pull pawbis/twitter_api:2.0"
+                    sh "docker run -v twitter_api_folder:/twitter_api_folder pawbis/twitter_api"
+                }
+            }
+        }
+        
+        stage("Deploy second container"){
+            steps{
+                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
+                    sh "chmod +x -R ${env.WORKSPACE}"
+                    sh "./Script.sh"
+                    sh "docker login --username pawbis --password password"
+                    sh "docker pull pawbis/twitter_analysis:2.0"
+                    sh "docker run -v twitter_api_folder:/twitter_api_folder pawbis/twitter_analysis"
+                }
+            }
+        }
+        stage("Deploy third container"){
+            steps{
+                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
+                    sh "chmod +x -R ${env.WORKSPACE}"
+                    sh "./Script.sh"
+                    sh "docker login --username pawbis --password password"
+                    sh "docker pull pawbis/twitter_vis:1.0"
+                    sh "docker run pawbis/twitter_vis"
+                }
+            }
+        }
+    }
+}
