@@ -1,0 +1,21 @@
+-*- mode: ruby -*-
+vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+
+    config.vm.define "vm_master" do |vm_master|
+        vm_master.vm.box = "ubuntu/trusty64"
+    end
+
+    config.vm.define "vm_node01" do |vm_node01|
+        vm_node01.vm.box = "ubuntu/trusty64"
+    end
+
+    config.vm.define "vm_node02" do |vm_node02|
+        vm_node02.vm.box = "ubuntu/trusty64"
+    end
+
+    config.vm.define "vm_node03" do |vm_node03|
+        vm_node03.vm.box = "ubuntu/trusty64"
+    end
+end

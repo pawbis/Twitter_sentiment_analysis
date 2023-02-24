@@ -1,4 +1,3 @@
-//4eb30216625344499e869e842e4163b4
 //It is template for potential CI pipeline in order to build/test code, since mine was written to be containerized.
 //As the code has to be tested before containerized mine wont be usefull.
 //CI part of the file
@@ -30,6 +29,7 @@ pipeline {
         stage("Deploy first container") {
             steps{
                 dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
+                    //sh "su - root"
                     sh "chmod +x -R ${env.WORKSPACE}"
                     sh "./Script.sh"
                     sh "docker login --username pawbis --password password"
