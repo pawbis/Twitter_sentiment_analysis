@@ -1,0 +1,11 @@
+[api_node]
+api_container ansible_host=192.150.50.11 ansible_ssh_user=test2 ansible_become_pass=test2
+[analysis_node]
+api_container ansible_host=192.150.50.12 ansible_ssh_user=test3 ansible_become_pass=test3
+[vis_node]
+api_container ansible_host=192.150.50.13 ansible_ssh_user=test4 ansible_become_pass=test4
+
+[machines:children]
+api_node
+analysis_node
+vis_node

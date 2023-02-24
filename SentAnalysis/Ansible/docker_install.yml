@@ -1,0 +1,41 @@
+- hosts: machines
+  become: true
+  tasks:
+  - name: Installing aptitude.
+    apt:
+      name: aptitude #tool for interfacing with the linux package manager, preffered by ansible
+      state: latest
+      update_cache: true
+  
+  - name: Installing system packages.
+    apt:
+      pkg:
+        - apt-transport-https #supports access to repo by https rather than http
+        - ca-certificates #ceritifcates to be able to establish a secure connection 
+        - curl
+        - software-properties-common 
+        - python3-pip
+        - virtualenv
+        - python3-setuptools
+      state: latest
+      update_cache: true
+
+  - name: Adding Docker keys #adding key to verify the download
+    apt-key:
+      url: https://download.docker.com/linux/ubuntu/gpg
+      state: present
+    
+  - name: Getting Docker repository #adding official repository
+    apt_repository:
+      repo: deb https://download.docker.com/linux/ubuntu focal stable
+      state: present
+
+  - name: Installing docker
+    apt:
+      name: docker-ce
+      state: latest
+      update_cache: true
+  
+  - name: Installing Docker module for python.
+    pip:
+      name: docker

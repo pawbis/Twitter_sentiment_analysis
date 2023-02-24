@@ -1,0 +1,23 @@
+- hosts: machines
+  become: true
+  tasks:
+  - name: Getting Images
+    community.docker.docker_images:
+      name: "{{ item.image }}"
+      source: pull
+    loop:
+      - {image: 'pawbis/twitter_api:2.0', name: api_node'}
+      - {image: 'pawbis/twitter_analysis:2.0', name: analysis_node'}
+      - {image: 'pawbis/twitter_vis:1.0', name: vis_node'}
+    when: 'inventory_hostname in groups ["{{ item.name }}"]'
+
+  - name: Running images
+    community.docker.docker_images:
+      name: "{{ item.image }}"
+      image: "{{ item.image }}"
+      state: started
+    loop:
+      - {image: 'pawbis/twitter_api:2.0', name: api_node'}
+      - {image: 'pawbis/twitter_analysis:2.0', name: analysis_node'}
+      - {image: 'pawbis/twitter_vis:1.0', name: vis_node'}
+    when: 'inventory_hostname in groups ["{{ item.name }}"]'
