@@ -1,6 +1,7 @@
 -*- mode: ruby -*-
 vi: set ft=ruby :
 
+# Setting up vagrant file in order to create vm's to test ansible/troubleshot networking issues
 Vagrant.configure("2") do |config|
 
     config.vm.define "vm_master" do |vm_master|
