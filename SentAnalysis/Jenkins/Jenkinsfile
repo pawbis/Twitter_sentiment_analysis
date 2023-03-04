@@ -26,39 +26,29 @@ pipeline {
             }
         }
         //deploy part of the jenkinsfile
-        stage("Deploy first container") {
-            steps{
-                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
-                    //sh "su - root"
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    sh "./Script.sh"
-                    sh "docker login --username pawbis --password password"
-                    sh "docker pull pawbis/twitter_api:2.0"
-                    sh "docker run -v twitter_api_folder:/twitter_api_folder pawbis/twitter_api"
+        stage("vis container") {
+            agent{
+                docker{
+                    image 'pawbis/twitter_vis:1.0'
+                    registryUrl 'https://registry.hub.docker.com'
+                    reuseNode true
                 }
             }
-        }
-        
-        stage("Deploy second container"){
             steps{
-                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    sh "./Script.sh"
-                    sh "docker login --username pawbis --password password"
-                    sh "docker pull pawbis/twitter_analysis:2.0"
-                    sh "docker run -v twitter_api_folder:/twitter_api_folder pawbis/twitter_analysis"
-                }
+                sh 'echo if you see this it is working'
             }
         }
-        stage("Deploy third container"){
-            steps{
-                dir("Twitter_sentiment_analysis/SentAnalysis/Jenkins"){
-                    sh "chmod +x -R ${env.WORKSPACE}"
-                    sh "./Script.sh"
-                    sh "docker login --username pawbis --password password"
-                    sh "docker pull pawbis/twitter_vis:1.0"
-                    sh "docker run pawbis/twitter_vis"
+        stage("api container"){
+            agent{
+                docker{
+                    image 'pawbis/twitter_api:2.0'
+                    registryUrl 'https://registry.hub.docker.com'
+                    reuseNode true
+                    args '--restart=always'
                 }
+            }
+            steps{
+                sh 'echo if you see this it is working'
             }
         }
     }
